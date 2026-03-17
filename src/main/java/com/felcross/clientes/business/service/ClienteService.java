@@ -6,6 +6,7 @@ import com.felcross.clientes.domain.entity.Cliente;
 import com.felcross.clientes.domain.repository.ClienteRepository;
 import com.felcross.clientes.infrastructure.feign.EnderecoViaCepResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class ClienteService {
     private final ClienteRepository repository;
     private final ViaCepService viaCepService;
     private final ClienteMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     public ClienteResponse criar(ClienteRequest req) {
         if (repository.existsByEmail(req.getEmail()))
@@ -27,7 +29,7 @@ public class ClienteService {
 
         Cliente cliente = mapper.toEntity(req);
         cliente.setEndereco(mapper.toEndereco(viacep));
-
+        cliente.setPassword(passwordEncoder.encode(req.getPassword()));
         return mapper.toResponse(repository.save(cliente));
     }
 
