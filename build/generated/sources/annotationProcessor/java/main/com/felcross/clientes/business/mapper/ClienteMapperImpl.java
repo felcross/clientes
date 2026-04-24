@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-03-17T15:46:12-0300",
+    date = "2026-04-02T14:57:27-0300",
     comments = "version: 1.6.3, compiler: IncrementalProcessingEnvironment from gradle-language-java-9.0.0.jar, environment: Java 21.0.10 (Ubuntu)"
 )
 @Component
@@ -75,14 +75,14 @@ public class ClienteMapperImpl implements ClienteMapper {
             return null;
         }
 
-        EnderecoViaCepResponse enderecoViaCepResponse = new EnderecoViaCepResponse();
+        EnderecoViaCepResponse.EnderecoViaCepResponseBuilder enderecoViaCepResponse = EnderecoViaCepResponse.builder();
 
-        enderecoViaCepResponse.setLocalidade( endereco.getCidade() );
-        enderecoViaCepResponse.setCep( endereco.getCep() );
-        enderecoViaCepResponse.setLogradouro( endereco.getLogradouro() );
-        enderecoViaCepResponse.setBairro( endereco.getBairro() );
-        enderecoViaCepResponse.setUf( endereco.getUf() );
+        enderecoViaCepResponse.localidade( endereco.getCidade() );
+        enderecoViaCepResponse.cep( endereco.getCep() );
+        enderecoViaCepResponse.logradouro( endereco.getLogradouro() );
+        enderecoViaCepResponse.bairro( endereco.getBairro() );
+        enderecoViaCepResponse.uf( endereco.getUf() );
 
-        return enderecoViaCepResponse;
+        return enderecoViaCepResponse.build();
     }
 }

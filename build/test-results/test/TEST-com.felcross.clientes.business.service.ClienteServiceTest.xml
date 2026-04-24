@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.felcross.clientes.business.service.ClienteServiceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-04-01T19:32:26.818Z" hostname="DESKTOP-DIFT32I" time="0.265">
+  <properties/>
+  <testcase name="Deve criar um cliente com sucesso quando dados e CEP forem válidos" classname="com.felcross.clientes.business.service.ClienteServiceTest" time="0.251"/>
+  <testcase name="Deve lançar ResourceNotFoundException quando o ViaCep retorna erro" classname="com.felcross.clientes.business.service.ClienteServiceTest" time="0.006"/>
+  <testcase name="Deve lançar ConflictException ao tentar cadastrar e-mail duplicado" classname="com.felcross.clientes.business.service.ClienteServiceTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,6 +1,8 @@
 package com.felcross.clientes.infrastructure.security;
 
+import com.felcross.clientes.domain.entity.Cliente;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,14 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String secret;
 
-    public String gerarToken(String email) {
+    public String gerarToken(Cliente cliente) {
         return Jwts.builder()
-                .subject(email)
+                .subject(cliente.getEmail())
+                .claim("id", cliente.getId())
+                .claim("role", "USER")
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 86400000)) // 24h
-                .signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)))
+                .expiration(new Date(System.currentTimeMillis() + 86400000))
+                .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret)))
                 .compact();
     }
 }

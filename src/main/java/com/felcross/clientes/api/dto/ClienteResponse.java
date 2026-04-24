@@ -5,7 +5,11 @@ import com.felcross.clientes.infrastructure.feign.EnderecoViaCepResponse;
 import lombok.*;
 import java.time.LocalDateTime;
 
-@Data @NoArgsConstructor @Builder @AllArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ClienteResponse {
     private Long id;
     private String nome;

@@ -33,5 +33,5 @@ public class AuthController {
         if (!passwordEncoder.matches(req.getPassword(), cliente.getPassword()))
             throw new IllegalArgumentException("Email ou senha invalidos");
 
-        return new LoginResponse(jwtService.gerarToken(cliente.getEmail()));
+        return new LoginResponse(jwtService.gerarToken(cliente));
 }}

@@ -1,5 +1,6 @@
 package com.felcross.clientes.business.service;
 
+import com.felcross.clientes.infrastructure.exception.BusinessException;
 import com.felcross.clientes.infrastructure.feign.EnderecoViaCepResponse;
 import com.felcross.clientes.infrastructure.feign.ViaCepClient;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,16 @@ public class ViaCepService {
     private final ViaCepClient client;
 
     public EnderecoViaCepResponse buscarEndereco(String cep) {
+        // 1. Limpa o CEP (remove tudo que não for dígito)
+        String cepLimpo = cep.replaceAll("\\D", "");
+
+        // 2. Valida o formato
+        if (cepLimpo.length() != 8) {
+            // O erro ocorre porque aqui você provavelmente está usando IllegalArgumentException
+            // ou não está lançando a BusinessException que o teste espera.
+            throw new BusinessException("Formato de CEP inválido");
+        }
+
         return client.buscarEndereco(processarCep(cep));
     }
 
