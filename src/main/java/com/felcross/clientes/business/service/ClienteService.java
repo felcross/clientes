@@ -4,6 +4,8 @@ import com.felcross.clientes.api.dto.*;
 import com.felcross.clientes.business.mapper.ClienteMapper;
 import com.felcross.clientes.domain.entity.Cliente;
 import com.felcross.clientes.domain.repository.ClienteRepository;
+import com.felcross.clientes.infrastructure.exception.ConflictException;
+import com.felcross.clientes.infrastructure.exception.ResourceNotFoundException;
 import com.felcross.clientes.infrastructure.feign.EnderecoViaCepResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,14 +21,15 @@ public class ClienteService {
     private final PasswordEncoder passwordEncoder;
 
     public ClienteResponse criar(ClienteRequest req) {
+        // Mudança: ConflictException para dados duplicados
         if (repository.existsByEmail(req.getEmail()))
-            throw new IllegalArgumentException("Email ja cadastrado");
+            throw new ConflictException("Email já cadastrado");
         if (repository.existsByCpf(req.getCpf()))
-            throw new IllegalArgumentException("CPF ja cadastrado");
+            throw new ConflictException("CPF já cadastrado");
 
         EnderecoViaCepResponse viacep = viaCepService.buscarEndereco(req.getCep());
-        if (viacep.isErro()) throw new IllegalArgumentException("CEP invalido");
-
+        // Mudança: BusinessException ou ResourceNotFound para erro na API externa
+        if (Boolean.TRUE.equals(viacep.getErro())) throw new ResourceNotFoundException("CEP não encontrado na base do ViaCep");
         Cliente cliente = mapper.toEntity(req);
         cliente.setEndereco(mapper.toEndereco(viacep));
         cliente.setPassword(passwordEncoder.encode(req.getPassword()));
@@ -50,8 +53,10 @@ public class ClienteService {
 
     public void deletar(Long id) { repository.delete(findOrThrow(id)); }
 
+
+
     private Cliente findOrThrow(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente nao encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com ID: " + id));
     }
 }

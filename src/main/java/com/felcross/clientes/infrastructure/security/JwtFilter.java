@@ -1,5 +1,6 @@
 package com.felcross.clientes.infrastructure.security;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -21,7 +22,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (h != null && h.startsWith("Bearer ")) {
             try {
                 Claims c = Jwts.parser()
-                    .verifyWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)))
+                    .verifyWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret)))
                     .build().parseSignedClaims(h.substring(7)).getPayload();
                 SecurityContextHolder.getContext().setAuthentication(
                     new UsernamePasswordAuthenticationToken(c.getSubject(), null, Collections.emptyList()));

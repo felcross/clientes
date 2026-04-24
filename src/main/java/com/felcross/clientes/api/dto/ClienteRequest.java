@@ -1,13 +1,13 @@
 package com.felcross.clientes.api.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ClienteRequest {
     @NotBlank private String nome;
     @NotBlank @Email private String email;
